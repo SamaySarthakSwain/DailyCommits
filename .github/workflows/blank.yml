@@ -1,8 +1,9 @@
 name: Samay's Daily Commit
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: '*/2 * * * *'
+    - cron: '*/1 * * * *'  # Every 2 minutes
 
 permissions:
   contents: write
@@ -15,7 +16,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
-        ref: main 
+        token: ${{ secrets.GITHUB_TOKEN }}
+        ref: main
 
     - name: Create file and commit
       run: |
@@ -34,7 +36,5 @@ jobs:
         git config --global user.name "samay"
         git config --global user.email "samaysarthakswain@gmail.com"
         git add "$FILE"
-        git commit -m "Hello, my name is bishwa shah nice to meet you"
-        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/beesou777/mean-commit.git
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        git commit -m "Hello, my name is bishwa shah nice to meet you" || echo "Nothing to commit"
+        git push origin main
